@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMP List</title>
+</head>
+<body>
+    <a href="/admin">Back</a>
+    <!-- <a href="/logout">Logout</a> -->
+	
+	<h3>All EMP List</h3>
+	<table border="1">
+		<tr>
+			<th>EMP ID</th>
+			<th>USERNAME</th>
+			<th>PASSWORD</th>		
+			<th>PHONE</th>
+			<th>ACTION</th>
+		</tr>
+
+		<% for(var i=0; i < userList.length; i++){ %>
+		<tr>
+			<td><%= userList[i].id %></td>
+			<td><%= userList[i].username %></td>
+			<td><%= userList[i].password %></td>
+			<td><%= userList[i].phone %></td>
+			<td><a href="/admin/Update/<%= userList[i].id %>">UPDATE</a> | <a href="/admin/Delete/<%= userList[i].id %>"> DELETE </a></td>
+		</tr>
+		<% } %>
+    </table>
+</body>
+</html>

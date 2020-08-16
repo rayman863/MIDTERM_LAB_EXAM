@@ -58,14 +58,14 @@ router.post('/AddEmployee', [
 	userModel.insert(user, function(status){
 		if(status){
 			if(req.session.type == "Admin"){
-				return res.redirect('/admin');
+				return res.render('admin/index');
 			}
 			else{
 				res.redirect('/login');
 			}
 		}else{
 			if(req.session.type == "Admin"){
-				return res.redirect('/admin/AddEmployee');
+				return res.render('admin/addemp');
 			}
 			else{
 				res.redirect('/login');

@@ -3,7 +3,7 @@ var db = require('./db');
 module.exports ={
 
 	get: function(user, callback){
-		var sql = "select * from admin where empid=?";
+		var sql = "select * from employee where id=?";
 		db.getResults(sql, [user.userid], function(result){
 			if(result.length > 0){
 				//console.log(result);
@@ -27,7 +27,7 @@ module.exports ={
 	},
 
 	getAll: function(callback){
-		var sql = "select * from admin";
+		var sql = "select * from employee";
 		db.getResults(sql, null,  function(result){
 			if(result.length > 0){
 				callback(result);
@@ -49,7 +49,7 @@ module.exports ={
 	},
 
 	insert: function(user, callback){
-		var sql = "INSERT INTO `employee`(`username`, `password`, `phone`) VALUES (?,?,?)";
+		var sql = "INSERT INTO `employee` (`username`, `password`, `phone`) VALUES (?,?,?)";
 
 		db.execute(sql, [user.uname, user.password, user.phone], function(status){
 			if(status){
@@ -58,8 +58,8 @@ module.exports ={
 				callback(false);
 			}
 		});
-		
-		var sql2 = "INSERT INTO `login`(`username`, `password`, `type`) VALUES (?,?,?)";
+
+		var sql2 = "INSERT INTO `login` (`username`, `password`, `type`) VALUES (?,?,?)";
 
 		db.execute(sql2, [user.uname, user.password, user.type], function(status){
 			if(status){
