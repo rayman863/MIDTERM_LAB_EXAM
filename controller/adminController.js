@@ -41,9 +41,7 @@ router.post('/AddEmployee', [
 	  ),
 	body('confirmpassword').notEmpty(),//.matches('password'),
 	body('type').notEmpty(),  
-	body('phone').notEmpty().isDecimal().isLength({ min: 11 }).isLength({ max: 11 }),  
-	body('gender').notEmpty(),  
-	body('designation').notEmpty() 
+	body('phone').notEmpty().isDecimal().isLength({ min: 11 }).isLength({ max: 11 })
   ], function(req, res){
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
@@ -54,22 +52,20 @@ router.post('/AddEmployee', [
 		uname 		: req.body.uname,
 		password	: req.body.password,
 		type		: req.body.type,
-		phone		: req.body.phone,
-		gender		: req.body.gender,
-		designation	: req.body.designation
+		phone		: req.body.phone
 	}
 
 	userModel.insert(user, function(status){
 		if(status){
 			if(req.session.type == "Admin"){
-				res.redirect('/admin');
+				return res.redirect('/admin');
 			}
 			else{
 				res.redirect('/login');
 			}
 		}else{
 			if(req.session.type == "Admin"){
-				res.redirect('/admin/addemp');
+				return res.redirect('/admin/AddEmployee');
 			}
 			else{
 				res.redirect('/login');

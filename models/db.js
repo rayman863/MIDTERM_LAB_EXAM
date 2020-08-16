@@ -6,7 +6,8 @@ function getConnection(callback){
 	  host     : 'localhost',
 	  user     : 'root',
 	  password : '',
-	  database : 'midterm_lab_exam'
+	  database : 'midterm_lab_exam',
+	  multipleStatements: true
 	});
 	 
 	connection.connect(function(err) {
