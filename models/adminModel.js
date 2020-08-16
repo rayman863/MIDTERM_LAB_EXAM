@@ -15,6 +15,19 @@ module.exports ={
 		});
 	},
 
+	search: function(user, callback){
+		var sql = "select * from employee where username like ?";
+		db.getResults(sql, [user], function(result){
+			console.log(result);
+			if(result.length > 0){
+				//console.log(result);
+				callback(result);
+			}else{
+				callback([]);
+			}
+		});
+	},
+
 	getType: function(user, callback){
 		var sql = "select * from admin where username=? and password=?";
 		db.getResults(sql, [user.uname, user.password], function(result){

@@ -6,11 +6,22 @@
     <title>EMP List</title>
 </head>
 <body>
+	<script
+  	src="https://code.jquery.com/jquery-3.5.1.js"
+  	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  	crossorigin="anonymous"></script>
+
     <a href="/admin">Back</a>
     <!-- <a href="/logout">Logout</a> -->
 	
 	<h3>All EMP List</h3>
-	<table border="1">
+	<br>
+	<h4>Search by Username:</h4>
+	<br>
+	<input type="text" placeholder="Search" id="search">
+	<br>
+	<br>
+	<table border="1" id="table_data">
 		<tr>
 			<th>EMP ID</th>
 			<th>USERNAME</th>
@@ -28,6 +39,33 @@
 			<td><a href="/admin/Update/<%= userList[i].id %>">UPDATE</a> | <a href="/admin/Delete/<%= userList[i].id %>"> DELETE </a></td>
 		</tr>
 		<% } %>
-    </table>
+	</table>
+	
+	<script>
+        $('#search').keyup(function () {
+            $.ajax({
+                url: '/admin/Search',
+                method: 'POST',
+                dataType: 'JSON',
+                data: {
+                    search_value: $(this).val(),
+                },
+                success: function (result) {
+                    if ('userList' in result) {
+						let html = '';
+							html += "<tr><th>EMP ID</th><th>USERNAME</th><th>PASSWORD</th><th>PHONE</th></tr>";
+                        for (let i = 0; i < result.userList.length; i++) {
+                            html += "<tr><td>" + result.userList[i].id + "</td>";
+                            html += "<td>" + result.userList[i].username + "</td>";
+                            html += "<td>" + result.userList[i].password + "</td>";
+                            html += "<td>" + result.userList[i].phone + "</td>";
+                            html += "<td><a href='/admin/Update/" + result.userList[i].id + "'>UPDATE</a> | <a href='/admin/Delete/" + result.userList[i].id + "''> DELETE </a></td></tr>";
+                        }
+                        $('#table_data').html(html);
+                    }
+                },
+            });
+        });
+    </script>
 </body>
 </html>

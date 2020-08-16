@@ -183,7 +183,18 @@ router.post('/Delete/:id', function(req, res){
     });
 });
 
-
+router.post('/Search', function (req, res) {
+	// console.log(req.body);
+	console.log(req.body.search_value);
+	var user = "%" + req.body.search_value + "%";
+	console.log(user);
+    userModel.search(user, (result) => {
+        console.log(result);
+        res.json({
+            userList: result
+        })
+    });
+});
 
 
 
