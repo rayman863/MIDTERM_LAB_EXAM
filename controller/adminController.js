@@ -85,11 +85,7 @@ router.get('/Update/:id',function(req,res)
 		if(req.session.type == "Admin"){
 			res.render('admin/updateemp', {
 				username: result.username,
-				password: result.password,
-				type: result.type,
-				phone: result.phone,
-				gender: result.gender,
-				designation: result.designation
+				phone: result.phone
 			});
 		}
 		else{
@@ -99,18 +95,15 @@ router.get('/Update/:id',function(req,res)
     });
 });
 
-router.post('/Update/:id',[
+router.post('/Update/:id', [
 	// username must not be empty
 	body('uname').notEmpty(),
 	// password must be at least 8 chars long
 	body('password').notEmpty().isLength({ min: 8 }).matches(
 		/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d@$.!%*#?&]/,
 	  ),
-	body('confirmpassword').notEmpty(),//.matches('password'),
-	body('type').notEmpty(),  
-	body('phone').notEmpty().isDecimal().isLength({ min: 11 }).isLength({ max: 11 }),  
-	body('gender').notEmpty(),  
-	body('designation').notEmpty()  
+	body('confirmpassword').notEmpty(),//.matches('password'), 
+	body('phone').notEmpty().isDecimal().isLength({ min: 11 }).isLength({ max: 11 })
   	], function(req,res)
 	{
 		const errors = validationResult(req);
@@ -121,15 +114,13 @@ router.post('/Update/:id',[
     {
 		username: req.body.uname,
         password: req.body.password,
-        gender: req.body.gender,
         phone: req.body.phone,
-		designation: req.body.designation,
 		id: req.params.id
     }
     userModel.update(user,function(result)
     {
 		if(req.session.type == "Admin"){
-			res.redirect('admin/AllEmployeeList');
+			res.redirect('/admin/AllEmployeeList');
 		}
 		else{
 			res.redirect('/login');
