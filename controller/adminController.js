@@ -83,6 +83,7 @@ router.get('/Update/:id',function(req,res)
     userModel.get(user,function(result)
     {
 		if(req.session.type == "Admin"){
+			req.session.oldusername = result.username;
 			res.render('admin/updateemp', {
 				username: result.username,
 				phone: result.phone
@@ -112,11 +113,15 @@ router.post('/Update/:id', [
 	}
     var user=
     {
+		oldusername: req.session.oldusername,
 		username: req.body.uname,
         password: req.body.password,
         phone: req.body.phone,
 		id: req.params.id
-    }
+	}
+	
+	
+
     userModel.update(user,function(result)
     {
 		if(req.session.type == "Admin"){
@@ -146,25 +151,36 @@ router.get('/Delete/:id', function(req, res){
 
 router.post('/Delete/:id', function(req, res){
 
-	userModel.delete(req.params.id, function(status){
-		if(status){
-			if(req.session.type == "Admin"){
-				res.redirect('/admin');
-			}
-			else{
-				res.redirect('/login');
-			}
-			
-		}else{
-			if(req.session.type == "Admin"){
-				res.redirect('/admin/AllEmployeeList');
-			}
-			else{
-				res.redirect('/login');
-			}
-			
+	var user = {
+		userid: req.params.id
+	}
+
+	userModel.get(user,function(result)
+    {
+		user = {
+			userid: req.params.id,
+			username: result.username
 		}
-	});
+		userModel.delete(user, function(status){
+			if(status){
+				if(req.session.type == "Admin"){
+					return res.redirect('/admin/AllEmployeeList');
+				}
+				else{
+					res.redirect('/login');
+				}
+				
+			}else{
+				if(req.session.type == "Admin"){
+					return res.render('admin/index');
+				}
+				else{
+					res.redirect('/login');
+				}
+				
+			}
+		});
+    });
 });
 
 

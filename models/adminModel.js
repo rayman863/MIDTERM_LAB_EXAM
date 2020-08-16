@@ -5,6 +5,7 @@ module.exports ={
 	get: function(user, callback){
 		var sql = "select * from employee where id=?";
 		db.getResults(sql, [user.userid], function(result){
+			console.log(result);
 			if(result.length > 0){
 				//console.log(result);
 				callback(result[0]);
@@ -71,8 +72,8 @@ module.exports ={
 	},
 
 	update: function(user, callback){
-		var sql = "update employee set username=?, password=?, phone=? where id=?";
-		db.execute(sql, [user.username, user.password, user.phone, user.id], function(status){
+		var sql = "update employee set username=?, password=?, phone=? where id=?; update login set username=?, password=? where username=?";
+		db.execute(sql, [user.username, user.password, user.phone, user.id, user.username, user.password, user.oldusername], function(status){
 			if(status){
 				callback(true);
 			}else{
@@ -81,14 +82,24 @@ module.exports ={
 		});
 	},
 
-	delete: function(id, callback){
-		var sql = "delete from admin where empid=?";
-		db.execute(sql, [id], function(status){
+	delete: function(user, callback){
+		var sql = "delete from employee where id=?; delete from login where username=?";
+		db.execute(sql, [user.userid, user.username], function(status){
+			console.log(user.userid);
+			console.log(user.username);
 			if(status){
 				callback(true);
 			}else{
 				callback(false);
 			}
 		});
+		// var sql2 = "delete from login where username=?";
+		// db.execute(sql2, [user.username], function(status){
+		// 	if(status){
+		// 		callback(true);
+		// 	}else{
+		// 		callback(false);
+		// 	}
+		// });
 	}
 }
