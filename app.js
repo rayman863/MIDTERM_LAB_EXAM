@@ -19,7 +19,6 @@ app.use('/admin', admin);
 app.use('/employee', emp);
 app.use('/logout', logout);
 
-
 app.get('/', function(req, res){
 	res.send("this is index page!<br> <a href='/login'> login</a> ");
 });
